@@ -57,7 +57,9 @@ def _destructive_guard(monkeypatch, tmp_path):
 
     monkeypatch.setattr(Path, "unlink", p_unlink)
     monkeypatch.setattr(Path, "rmdir", p_rmdir)
-    monkeypatch.chdir(tmp_path)
+    cwd = tmp_path.parent / f"{tmp_path.name}_cwd"
+    cwd.mkdir(exist_ok=True)
+    monkeypatch.chdir(cwd)   # cwd isolado, fora da árvore dos alvos de teste
     yield
 
 

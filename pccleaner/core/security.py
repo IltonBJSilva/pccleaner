@@ -200,6 +200,8 @@ def assert_target_root_allowed(root: str) -> None:
     for special in (os.getcwd(), _APP_DIR):
         if is_within(special, n):
             raise UnsafePathError(f"Caminho contém o diretório atual/do aplicativo: {root}")
+    if is_within(n, _APP_DIR):
+        raise UnsafePathError(f"Caminho dentro da pasta do próprio aplicativo: {root}")
     if is_project_root(root):
         raise UnsafePathError(f"Pasta é raiz de projeto/repositório — nunca limpa: {root}")
 
